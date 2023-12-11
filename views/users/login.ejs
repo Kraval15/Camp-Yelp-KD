@@ -1,0 +1,55 @@
+<% layout('/layouts/boilerplate')%>
+<!-- Creates a form to get login data for the new user and then submits it using a post request. Info is submitted with the -->
+<!-- key of username and password which matches the keys defined in our user model schema so login data can be used with passport 
+    for authenticating the user -->
+
+<!-- to add validation through bootstrap to make sure inputs are entered by user we  -->
+<!-- added no validate, class = "validated-form", required in input and looks good when input is valid as valid-feedback: -->
+
+<div class="container d-flex justify-content-center align-items-center mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+      <div class="card text-bg-dark shadow">
+        <img
+          src="https://www.travelandleisure.com/thmb/ndE1V4nem_nwyBD6jCjPf1VUtos=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/TAL-cabi-exteriors-roamstead-tennessee-CAMPTN0823-8aa85521d1fc431299fb339dcd760602.jpg"
+          alt=""
+          class="card-img-top"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Login</h5>
+          <form
+            action="/user/login"
+            method="POST"
+            class="validated-form"
+            novalidate
+          >
+            <div class="form-outline mb-4">
+              <label class="form-label" for="username">Username</label>
+              <input
+                class="form-control"
+                type="text"
+                id="username"
+                name="username"
+                required
+              />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="form-outline mb-4">
+              <label class="form-label" for="password">Password</label>
+              <input
+                class="form-control"
+                type="password"
+                id="password"
+                name="password"
+                required
+              />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+            <button class="btn btn-success btn-block mb-4">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

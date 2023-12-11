@@ -1,0 +1,56 @@
+<% layout('/layouts/boilerplate')%>
+<!-- This file gets the data sent into campgrounds then loops through each of the data and prints out the title of the campground while adding -->
+<!-- a link to it which redirects it to the /campgrounds/(campground_id) url and also has a link to be able to add new campground -->
+
+<!-- linked with the JS script for the cluster map -->
+<div id="map" style="width: 100%; height: 500px"></div>
+<h1 class="text-dark">All Campgrounds</h1>
+
+<div class="mb-3">
+  <a class="text-white" href="/campgrounds/new">Add Campground</a>
+</div>
+<% for (let campground of campgrounds){%>
+<div class="card bg-dark mb-3">
+  <div class="row">
+    <div class="col-md-4">
+      <!-- checks if the image array has anything in it then display the first image and if not then display the image manually put in the src -->
+      <% if (campground.image.length) { %>
+      <img class="img-fluid" alt="" src="<%=campground.image[0].url%>" />
+      <% } else { %>
+      <img
+        class="img-fluid"
+        alt=""
+        src="https://res-console.cloudinary.com/da2lqe7dv/thumbnails/transform/v1/image/upload/Y19saW1pdCxoXzE2MDAsd18xNjAwLGZfanBnLGZsX2xvc3N5LmFueV9mb3JtYXQucHJlc2VydmVfdHJhbnNwYXJlbmN5LnByb2dyZXNzaXZl/v1/WWVscENhbXAvbHlmazViZW0xNnZjbnFhbGU5d3U=/template_primary"
+      />
+      <% } %>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title text-white"><%= campground.title %></h5>
+        <p class="card-text text-white"><%= campground.description %></p>
+        <p class="card-text text-white">
+          <small class="text-white"><%= campground.location%></small>
+        </p>
+        <a class="btn btn-primary" href="/campgrounds/<%=campground._id%>"
+          >View <%=campground.title%></a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<% }%>
+
+<!-- Code in between script tags in HTML and ejs file is JS code. This code only runs in the browser and not in the actual file before hand.
+  See code below for example as we require a variable from the ejs file but since the script runs in the browser, we don't 
+  have access to the variables such as campground or env variables such as the mapbox_token so we need to manually pass it in the script
+  in the program so those variables are available when the script is run in the browser. The script we pass the below variables to is 
+  clusterMap.js in the public javascript folder -->
+<script>
+  const mapToken = "<%-process.env.MAPBOX_TOKEN%>";
+  // turns the campground object into a JSON string format as mapbox required geoJSON format for the coordinates
+  const campgrounds = {features: <%- JSON.stringify(campgrounds) %>}
+</script>
+
+<!-- scripts in these HTML or ejs files run JS code. We import the showPageMap.js js file from the public javascripts folder. This file 
+  contains the js code required to show the map on the webpage. Code for this script is based on mapbox docs -->
+<script src="/javascripts/clusterMap.js"></script>

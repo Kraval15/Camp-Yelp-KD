@@ -1,0 +1,45 @@
+body {
+  height: 100vh;
+  /* sets background image of the home page and adds a black transparent gradient to it */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.unsplash.com/photo-1559521783-1d1599583485?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80");
+  /* makes it so the background image doesn't repeat if the orginal image is not big enough so it expands the image to fit the webpage */
+  background-size: cover;
+  /* centers the background image */
+  background-position: center;
+  text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
+}
+.cover-container {
+  max-width: 60vw;
+}
+
+/* updating the look of the nav links, makes the text a tranparent white and adds a solid border thats not able to be seen but then when
+you hover over it as seen in .nav-link hover, the border will show up */
+.nav-link {
+  padding: 0.25rem 0;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 1rem;
+  border-bottom: 0.25rem solid transparent;
+}
+
+.nav-link:hover {
+  color: rgba(255, 255, 255, 0.5);
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+/* the active link when on the home page is home link so we are giving that a border and distinct white colour so the user can visually see
+that they are on the home page */
+.nav-link.active {
+  color: white;
+  border-bottom-color: white;
+}
+
+/* orginally through bootstrap when you hover over a button it has text-shadow so its hard to see so this overwrites bootstrap rregular code
+on the button and styles it the way we want */
+.btn-secondary,
+.btn-secondary:hover {
+  color: #333;
+  text-shadow: none;
+}

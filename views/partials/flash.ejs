@@ -1,0 +1,29 @@
+<!-- for displaying a successful or error flash message. This file is connected to the boilerplate.ejs file and the boilerplate file is  -->
+<!-- connected to our route files such as edit, show etc... and the flash message key value pair is called when we actually execute the  -->
+<!-- for each of the .get or .put etc. calls in our campground route and review route files. While we use the flash middleware in the app.js  -->
+<!-- file to ensure that the flash message is stored in a local variable that is accessible by all the files required  -->
+
+<!-- checks if the success message exists and that it is not an empty array. When cosole.dir(success) is done we can see that its an empty  -->
+<!-- array so we don't want to display the alert if there is no message to display (empty array). Same case with the error messages below -->
+<% if(success && success.length) {%>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <%= success %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+
+<% } %> <% if(error && error.length) {%>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <%= error %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+<% } %>

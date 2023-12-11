@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boilerplate</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <!-- script below is include on all templates so we are able to access mapbox and display a map as required. We don't display maps
+    on all templates for example on new.ejs we don't but we are just adding this script here for now just for access. -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+  </head>
+  <!-- making it a flex display body and flex-column so it becomes column based (play around with flex to get alignment we want)-->
+  <!-- vh-100 makes the veiw height of body 100 units minimum so even if there is not much content the body size will be big so we -->
+  <!-- we can use that along with mt-auto in the footer.ejs to make sure the footer is always at the bottom of the webpage -->
+  <body class="d-flex flex-column vh-100 bg-secondary">
+    <%- include('../partials/navbar') %>
+    <!-- the <body> is all the body text that will be displayed for any body where this boilerplate file is connected to for example edit.ejs -->
+    <!-- index.ejs, new.ejs, show.ejs and so forth -->
+    <main class="container mt-5">
+      <%- include('../partials/flash') %> <%- body -%>
+    </main>
+    <%- include('../partials/footer') %>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/javascripts/validateForms.js"></script>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+<% layout('/layouts/boilerplate')%>
+<!-- Creates a form to get data for the new campground site and then submits it using a post request. Info is submitted with the -->
+<!-- key of location and title which matches the keys defined in our model schema so data can be used to create a new model instance  -->
+
+<!-- to add validation through bootstrap to make sure inputs are entered by user we  -->
+<!-- added no validate, class = "validated-form", required in input and looks good when input is valid as valid-feedback: -->
+<!-- added enctype as multipart/form-data so we can have users upload files for example to save pictures  -->
+<div class="row">
+  <h1 class="text-center">New Campground</h1>
+  <div class="col-md-6 offset-md-3">
+    <form
+      action="/campgrounds"
+      method="POST"
+      novalidate
+      class="validated-form"
+      enctype="multipart/form-data"
+    >
+      <div class="mb-3">
+        <label class="form-label" for="title">Title</label>
+        <input
+          class="form-control"
+          type="text"
+          id="title"
+          name="title"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="location">Location</label>
+        <input
+          class="form-control"
+          type="text"
+          id="location"
+          name="location"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <div class="mb-3">
+        <!-- multiple below allows us to attach multiple files instead of just 1 -->
+        <label class="form-label" for="image"> Add Images </label>
+        <input type="file" name="image" id="image" multiple />
+      </div>
+      <!-- the below was old way where we used a text box to get image url but now we want to get files so we are using the above -->
+      <!-- <div class="mb-3">
+        <label class="form-label" for="image">Image Url</label>
+        <input
+          class="form-control"
+          type="text"
+          id="image"
+          name="image"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div> -->
+      <div class="mb-3">
+        <label class="form-label" for="price">Campground Price</label>
+        <div class="input-group">
+          <span class="input-group-text" id="price-label">$</span>
+          <input
+            type="text"
+            class="form-control"
+            id="price"
+            placeholder="0.00"
+            aria-label="price"
+            aria-describedby="price-label"
+            name="price"
+            required
+          />
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="description">Description</label>
+        <textarea
+          class="form-control"
+          type="text"
+          id="description"
+          name="description"
+          required
+        ></textarea>
+        <div class="invalid-feedback">Please Enter a Description!</div>
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-success">Add Campground</button>
+      </div>
+    </form>
+    <a href="/campgrounds">All Campgrounds</a>
+  </div>
+</div>

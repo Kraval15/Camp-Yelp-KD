@@ -1,0 +1,186 @@
+<% layout('/layouts/boilerplate')%>
+<!-- shows the information of the current campground. Has links to direct to webpage to show all campgrounds, edit campground. -->
+<!-- Also has button to submit a delete request to delete the current displayed campground -->
+
+<!-- linking our starabilty css stylesheet to our show page to help us display our user ratings of the campgrounds in a nice star format -->
+<link rel="stylesheet" href="/stylesheets/stars.css" />
+
+<!-- the below code creates a carousel through bootstrap to show our images of campgrounds -->
+<div class="row">
+  <div class="col-6">
+    <div id="campgroundCarousel" class="carousel slide">
+      <div class="carousel-inner">
+        <!-- looping through each image array in the campground and populating the image in the carousel  -->
+        <% for(let i=0; i<campground.image.length; i++) { %>  
+          <!-- checking if i=0 so that means thats the first image in the array, then we want to keep it active as required by the
+          carousel in bootstrap. Active image is the one that is there first in line in the carousel and then if its the images after
+          the first image then they are not set to active as we want the 1st image to be the starting image of the carousel-->
+          <% if (i ===0 ) { %>
+            <div class="carousel-item active">
+          <% } else { %>
+            <div class="carousel-item">
+          <% } %>
+          <img
+            src="<%= campground.image[i].url%>"
+            class="d-block w-100"
+            alt="..."
+          />
+        </div>
+        <% } %>
+      </div>
+      <!-- checks if the length of the image array is >1 and if it is then it displays the previous and next buttons in the carosuel otherwise
+      those buttons are not shown if there is only 1 image to display for the campground -->
+      <% if (campground.image.length > 1) { %>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#campgroundCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#campgroundCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+      <% } %>
+    </div>
+    <div class="card mb-3">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-muted"><%= campground.location%></li>
+        <li class="list-group-item text">
+          Submitted By: <%= campground.author.username%>
+        </li>
+        <li class="list-group-item">$<%= campground.price%>/night</li>
+      </ul>
+      <!-- the below checks if a user is signed in and checks that the related ids of the campground and the current user are equal
+      and only if they are equal then we show the edit and delete button to the user. If they are not equal then the campground was not
+      created by this user so they can't edit or delete it. We use .equals as this is the mongoose way of comapring object ids. We can't use
+      === to compare because when comparing objects such as the object id, they compare references to the object and not the actual object ids so 
+      they will never be equal if we compared the two ids with === -->
+      <% if (signedInUser && campground.author._id.equals(signedInUser._id)) {%>
+      <div class="card-body">
+        <a
+          class="card-link btn btn-info"
+          href="/campgrounds/<%=campground._id%>/edit"
+          >Edit</a
+        >
+
+        <form
+          class="d-inline"
+          action="/campgrounds/<%=campground._id%>?_method=DELETE"
+          method="POST"
+        >
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+      <% } %>
+      <div class="card-footer text-muted">2 days ago</div>
+    </div>
+  </div>
+  <div class="col-6">
+    <!-- associated with mapbox and its JS script which is in showPageMap.js file in the publics javascript folder to display the map \
+    of the campground location -->
+    <div id='map' style='width: 600px; height: 300px;'></div>
+    <!-- checks if there is a user signed in and only if a user is signed in then displays the form for the user to be able to submit a
+       review -->
+    <% if (signedInUser) {%>
+    <h2>Leave a Review</h2>
+    <form
+      action="/campgrounds/<%=campground._id%>/review"
+      method="POST"
+      class="mb-3 validated-form"
+      novalidate
+    >
+      <!-- adding the review stars UI so the user can use it to enter the rating for the campground. The value in input is set to 1 in below
+      code so if a user doesn't select a star rating, the default rating is 1 -->
+      <div class="mb-3">
+        <fieldset class="starability-basic">
+          <input
+            type="radio"
+            id="no-rate"
+            class="input-no-rate"
+            name="rating"
+            value="1"
+            checked
+            aria-label="No rating."
+          />
+          <input type="radio" id="first-rate1" name="rating" value="1" />
+          <label for="first-rate1" title="Terrible">1 star</label>
+          <input type="radio" id="first-rate2" name="rating" value="2" />
+          <label for="first-rate2" title="Not good">2 stars</label>
+          <input type="radio" id="first-rate3" name="rating" value="3" />
+          <label for="first-rate3" title="Average">3 stars</label>
+          <input type="radio" id="first-rate4" name="rating" value="4" />
+          <label for="first-rate4" title="Very good">4 stars</label>
+          <input type="radio" id="first-rate5" name="rating" value="5" />
+          <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="body">Review</label>
+        <textarea
+          class="form-control"
+          name="body"
+          id="body"
+          cols="30"
+          rows="3"
+          required
+        ></textarea>
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <button class="btn btn-success">Submit</button>
+    </form>
+    <% } %> <% for(let review of campground.reviews) { %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <!-- helps display the ratings in stars -->
+        <p class="starability-result" data-rating="<%=review.rating%>">
+          <!-- for accessbility purposes screenreader -->
+          Rated: <%= review.rating %>
+        </p>
+
+        <h6 class="card-subtitle mb-2 text-body-secondary">
+          <!-- prints the username of the user that created the review -->
+          By: <%= review.author.username %>
+        </h6>
+        <p class="card-text">Review: <%= review.body %></p>
+        <!-- checks if there is a signed in user and that the user that is signed in is asscoiated with the review to show the delete button -->
+        <% if (signedInUser && review.author._id.equals(signedInUser._id)) {%>
+        <form
+          action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"
+          method="POST"
+        >
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+        <% } %>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<!-- Code in between script tags in HTML and ejs file is JS code. This code only runs in the browser and not in the actual file before hand.
+  See code below for example as we require a variable from the ejs file but since the script runs in the browser, we don't 
+  have access to the variables such as campground or env variables such as the mapbox_token so we need to manually pass it in the script
+  in the program so those variables are available when the script is run in the browser. The script we pass the below variables to is 
+  showPageMap.js in the public javascript folder -->
+<script>
+  const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+  // turns the campground object into a JSON string format as mapbox required geoJSON format for the coordinates. 
+  //From seeing the old data that was in this cluster map example from mapbox in clusterMap.js, we saw that the format for the data was
+  //"features": [{geoJSON}] but our data for coodinates is only in geoJSON format so when we tweak the data that is sent to clusterMap.js
+  //in this file to update the data into the form the clustermap is looking for. 
+  const campground = <%- JSON.stringify(campground) %>
+</script>
+
+<!-- scripts in these HTML or ejs files run JS code. We import the showPageMap.js js file from the public javascripts folder. This file 
+contains the js code required to show the map on the webpage. Code for this script is based on mapbox docs -->
+<script src="/javascripts/showPageMap.js"></script>
+

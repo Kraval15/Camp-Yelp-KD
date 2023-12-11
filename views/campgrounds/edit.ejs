@@ -1,0 +1,109 @@
+<% layout('/layouts/boilerplate')%>
+
+<!-- Uses a form to submit a put method to edit the current campground. Has the required key value pairs (in this case title and location)-->
+<!-- so data can be used properly by our model and schema.  -->
+
+<!-- to add validation through bootstrap to make sure inputs are entered by user we  -->
+<!-- added no validate, class = "validated-form", required in input and looks good when input is valid as valid-feedback: -->
+<div class="row">
+  <h1 class="text-center">Edit Campground</h1>
+  <div class="col-md-6 offset-md-3">
+    <form
+      action="/campgrounds/<%=campground._id%>?_method=PUT"
+      method="POST"
+      novalidate
+      class="validated-form"
+      enctype="multipart/form-data"
+    >
+      <div class="mb-3">
+        <label class="form-label" for="title">Title</label>
+        <input
+          class="form-control"
+          type="text"
+          id="title"
+          name="title"
+          value="<%=campground.title %>"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="location">Location</label>
+        <input
+          class="form-control"
+          type="text"
+          id="location"
+          name="location"
+          value="<%=campground.location %>"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <!-- multiple below allows us to attach multiple files instead of just 1 -->
+        <label class="form-label" for="image"> Add Images </label>
+        <input type="file" name="image" id="image" multiple />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="price">Campground Price</label>
+        <div class="input-group">
+          <span class="input-group-text" id="price-label">$</span>
+          <input
+            type="text"
+            class="form-control"
+            id="price"
+            placeholder="0.00"
+            aria-label="price"
+            aria-describedby="price-label"
+            name="price"
+            value="<%=campground.price %>"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="description">Description</label>
+        <textarea
+          class="form-control"
+          type="text"
+          id="description"
+          name="description"
+          required
+        >
+<%= campground.description%></textarea
+        >
+      </div>
+      <div class="mb-3">
+        <!-- for each is a method for arrays which applies the function on every array. In the below, image is our image array that we 
+        specified in the campground model, img is each single image from the image array and i is an optional value which we have put
+        which tracks the index of the array. Typical syntax forEach: 
+        array.forEach(function(currentArrayElement(required), indeCurrentArrayElement (optional - can keep to track index))-->
+        <% campground.image.forEach(function(img, i) { %>
+        <!-- For each image that the campground has, the function displays the image and creates a check box associated with the image
+          with a unique id as it loops through the images. The unique id has a delete label as seen in code below associated with it so 
+          we need the unique id to associate each unique image with the label and checkbox 
+          For the input code below, once a check box is selected, the value of that checkbox is stored in the name portion once the
+          form is submitted. So for the above, for any images that are selected in the check box when the form is submitted, the filenames
+          of those images are stored in an array called deleteImages that we can access in the req.body of the form which in this case is
+          in our put route to edit form in the campgroundController.js file. We also are changing the url so we can display the image
+          as a thumbnail size instead of the full image. To do this in cloudinary we just need to change the string of the url to as per
+          below and it will give us a thumbnail size image instead of the full size one -->
+        <% thumbnail = img.url.replace('/upload', '/upload/w_200/') %>
+        <img src="<%=thumbnail %>" class="img-thumbnail" alt="" />
+        <div class="form-check-inline">
+          <input
+            type="checkbox"
+            id="image-<%=i%>"
+            name="deleteImages[]"
+            value="<%=img.filename%>"
+          />
+        </div>
+        <label for="image-<%=i%>">Delete?</label>
+        <% })%>
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-info">Update Campground</button>
+      </div>
+    </form>
+    <a href="/campgrounds/<%= campground._id%>">Back To Campground</a>
+  </div>
+</div>
