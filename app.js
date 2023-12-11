@@ -169,6 +169,8 @@ app.use((err, req, res, next) => {
   res.status(status).render("error", { err });
 });
 
+//when deployed, it will use the port that the deployment website uses and if there is no port then it will use 3000 which would mean we are
+//testing on our local database with port 3000
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
