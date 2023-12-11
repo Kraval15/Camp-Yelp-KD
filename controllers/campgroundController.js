@@ -7,7 +7,8 @@ const Campground = require("../models/campground");
 const { cloudinary } = require("../cloudinary/cloudinaryIndex");
 
 //for mapbox geocoding of locations so we can get latitude and longitude of each of our campground location
-const mbxGeocoding = require("@mapbox/mapbox-sdk/services/Geocoding");
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+
 const geocodeService = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
 //when its at the /campgrounds url, it stores all the data in the Campground model in the variable campgrounds, then sends it off to the
