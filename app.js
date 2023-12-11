@@ -35,10 +35,11 @@ const userRoutes = require("./routes/userRoute");
 
 //dbUrl should be process.env.MONGODB_URI when we want to use mongo atlas to save all the data to the mongo atlas servers online in production env
 //dbUrl should be "mongodb://localhost:27017/yelp-camp" when we want to use our local databse to store data in dev env
-const dbUrl = "mongodb://localhost:27017/yelp-camp";
+//const dbUrl = "mongodb://localhost:27017/yelp-camp";
+const dbUrl = process.env.MONGODB_URI;
 //in production mode it should be .connect(dbUrl, { dbName: "Yelp-Camp" })
 mongoose
-  .connect(dbUrl)
+  .connect(dbUrl, { dbName: "Yelp-Camp" })
   .then(() => {
     console.log("MONGO CONNECTION OPEN!!!");
   })
